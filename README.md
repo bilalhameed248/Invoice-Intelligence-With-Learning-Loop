@@ -39,7 +39,7 @@ T-OCR/
 Run the application using:
 ```bash
 cd app
-uvicorn app:app --reload
+uvicorn app:app --host 0.0.0.0 --port 3636 --reload
 ```
 
-Access the application at `http://localhost:8000`
+Access the application at `http://0.0.0.0:3636`

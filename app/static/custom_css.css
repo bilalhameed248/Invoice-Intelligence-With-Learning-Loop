@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa;
+}
+.card {
+    border-radius: 8px;
+}
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.confidence-low {
+    color: #dc3545;
+    font-weight: 600;
+}
+.confidence-high {
+    color: #198754;
+    font-weight: 600;
+}
