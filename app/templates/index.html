@@ -38,85 +38,108 @@
     </div>
   </div>
 
-  <!-- Extracted Fields -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="section-title">2. Extracted Invoice Details</div>
 
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label class="form-label">Vendor Name</label>
-          <input type="text" class="form-control" value="ABC Traders Pvt Ltd">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Invoice Number</label>
-          <input type="text" class="form-control" value="INV-223">
+  <!-- Main Content Row -->
+  <div class="row">
+    <!-- Left Column: Extracted Data -->
+    <div class="col-lg-6">
+
+      <!-- Extracted Fields -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="section-title">2. Extracted Invoice Details</div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Vendor Name</label>
+              <input type="text" class="form-control" value="" id = "vendor_name" name = "vendor_name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Invoice Number</label>
+              <input type="text" class="form-control" value="" id = "invoice_number" name = "invoice_number">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">Invoice Date</label>
+              <input type="date" class="form-control" value="" id = "invoice_date" name = "invoice_date">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tax Amount</label>
+              <input type="number" class="form-control" value="" id = "tax_amount" name = "tax_amount">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Total Amount</label>
+              <input type="number" class="form-control" value="" id = "total_amount" name = "total_amount">
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label class="form-label">Invoice Date</label>
-          <input type="date" class="form-control" value="2026-01-12">
+    <!-- Accounting Proposal -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="section-title">3. Proposed Accounting Entry</div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Debit Account</label>
+              <select class="form-select">
+                <option selected>Office Expense</option>
+                <option>IT Equipment Expense</option>
+                <option>Inventory</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Credit Account</label>
+              <input type="text" class="form-control" value="Accounts Payable" disabled>
+            </div>
+          </div>
+
         </div>
-        <div class="col-md-4">
-          <label class="form-label">Tax Amount</label>
-          <input type="number" class="form-control" value="141.00">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Total Amount</label>
-          <input type="number" class="form-control" value="2491.00">
+      </div>
+
+      <!-- Confidence & Review -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="section-title">4. Confidence & Review Status</div>
+
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <p class="mb-1">
+                Model Version: <strong>v1.0</strong>
+              </p>
+              <p class="mb-0">
+                Confidence Score:
+                <span class="confidence-low">0.68</span>
+              </p>
+            </div>
+            <div class="col-md-6 text-end">
+              <span class="badge bg-warning text-dark">
+                Manual Review Required
+              </span>
+            </div>
+          </div>
+
         </div>
       </div>
 
     </div>
-  </div>
 
-  <!-- Accounting Proposal -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="section-title">3. Proposed Accounting Entry</div>
-
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label class="form-label">Debit Account</label>
-          <select class="form-select">
-            <option selected>Office Expense</option>
-            <option>IT Equipment Expense</option>
-            <option>Inventory</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Credit Account</label>
-          <input type="text" class="form-control" value="Accounts Payable" disabled>
+     <!-- Right Column: Document Preview -->
+    <div class="col-lg-6">
+      <div class="card sticky-top" style="top: 20px;">
+        <div class="card-body">
+          <div class="section-title">Document Preview</div>
+          <div id="documentPreview" class="text-center p-4" style="min-height: 400px; border: 2px dashed #dee2e6; border-radius: 8px; background-color: #f8f9fa;">
+            <div class="d-flex align-items-center justify-content-center h-100">
+              <p class="text-muted">Upload a document to preview</p>
+            </div>
+          </div>
         </div>
       </div>
-
-    </div>
-  </div>
-
-  <!-- Confidence & Review -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="section-title">4. Confidence & Review Status</div>
-
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <p class="mb-1">
-            Model Version: <strong>v1.0</strong>
-          </p>
-          <p class="mb-0">
-            Confidence Score:
-            <span class="confidence-low">0.68</span>
-          </p>
-        </div>
-        <div class="col-md-6 text-end">
-          <span class="badge bg-warning text-dark">
-            Manual Review Required
-          </span>
-        </div>
-      </div>
-
     </div>
   </div>
 
