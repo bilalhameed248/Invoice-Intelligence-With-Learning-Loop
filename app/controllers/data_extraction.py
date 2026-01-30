@@ -3,13 +3,31 @@ class DataExtraction:
 
     def __init__(self):
         pass
-
+        
+    def invoice_table_to_dataframe(self, json_data):
+        try:
+            table_block = next((b for b in json_data.get("parsing_res_list", []) if b["block_label"] == "table"), None)
+            if not table_block or not table_block.get("block_content"):
+                return pd.DataFrame()
+            df = pd.read_html(table_block["block_content"])[0]
+            if df.iloc[0].isna().sum() == 0:
+                df.columns = df.iloc[0]
+                df = df[1:].reset_index(drop=True)
+            return df
+            
+        except Exception as e:
+            traceback.print_exc()
+            print(f"Exception in rule_based_extraction {e}")
+            return ''
 
     def rule_based_extraction(self, json_path):
         try:
             with open(json_path, "r") as f:
-                data = json.load(f)
-            rec_texts = data['overall_ocr_res']['rec_texts']
+                json_data = json.load(f)
+
+            invoice_table = self.invoice_table_to_dataframe(json_data)
+
+            rec_texts = json_data['overall_ocr_res']['rec_texts']
             extracted = {
                 'vendor_name': None,
                 'invoice_number': None,
@@ -63,6 +81,35 @@ class DataExtraction:
             print(f"Exception in rule_based_extraction {e}")
             return ''
 
+
+    def propose_accounting_entry(self, extracted_data, line_items):
+        try:
+            total = float(extracted_data["total_amount"].replace(',', ''))
+            tax = float(extracted_data["tax_amount"].replace(',', '')) if extracted_data.get("tax_amount") else 0.0
+            debit_buckets = {}
+            for _, row in line_items.iterrows():
+                desc = row["Description"].lower()
+                amount = float(row["Amount"])                                                       # Can use AI model here for classification
+                if any(k in desc for k in ["supply", "cartridge", "stationery"]):
+                    account = "Office Supplies Expense"
+                elif any(k in desc for k in ["laptop", "computer", "printer"]):
+                    account = "IT Equipment"
+                else:
+                    account = "General Expense"
+                debit_buckets[account] = debit_buckets.get(account, 0) + amount
+            entry = { "debit": [], "credit": []}
+            
+            for account, amount in debit_buckets.items():
+                entry["debit"].append({"account": account,"amount": round(amount, 2)})
+            if tax > 0:
+                entry["debit"].append({"account": "Tax Receivable","amount": round(tax, 2)})
+            entry["credit"].append({"account": "Accounts Payable", "amount": round(total, 2) })
+
+            return entry
+        except Exception as e:
+            traceback.print_exc()
+            print(f"Exception in rule_based_extraction {e}")
+            return ''
 
     def model_extraction(self):
         try:
