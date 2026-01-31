@@ -26,25 +26,25 @@ async def process_invoice_upload(file: UploadFile) -> dict:
     # ocr_output_dir = 'app/data/ocr_output/image_sample_invoice_res.json'
     extracted_data = data_ext_obj.rule_based_extraction(ocr_output_dir)
     
-    # For now, returning dummy data
-    # extracted_data = {
-    #     "vendor_name": "ABC Traders Pvt Ltd",
-    #     "invoice_number": "INV-223",
-    #     "invoice_date": "2026-01-12",
-    #     "tax_amount": 141.00,
-    #     "total_amount": 2491.00
-    # }
+    # Sample response structure
+    sample_basic_invoice_data = {
+        "vendor_name": "ABC Traders Pvt Ltd",
+        "invoice_number": "INV-223",
+        "invoice_date": "2026-01-12",
+        "tax_amount": 141.00,
+        "total_amount": 2491.00
+    }
     
-    accounting_proposal = {
+    sample_accounting_entry = {
         "debit_account": "Office Expense",
         "credit_account": "Accounts Payable"
     }
     
     return {
         "status": "success",
-        "extracted_data": extracted_data,
-        "accounting_proposal": accounting_proposal,
-        "confidence_score": 0.68,
+        "extracted_data": extracted_data['basic_invoice_data'] if 'basic_invoice_data' in extracted_data else sample_basic_invoice_data,
+        "accounting_proposal": extracted_data['accounting_entry'] if 'accounting_entry' in extracted_data else sample_accounting_entry,
+        "confidence_score": extracted_data['confidence_score'] if 'confidence_score' in extracted_data else 0,
         "model_version": "v1.0"
     }
         

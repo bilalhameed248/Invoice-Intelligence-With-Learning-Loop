@@ -73,18 +73,18 @@ document.addEventListener('DOMContentLoaded', function()
           {
             confidenceSpan.textContent = result.confidence_score.toFixed(2);
             confidenceSpan.className = result.confidence_score >= 0.8 ? 'confidence-high' : 'confidence-low';
+            if (result.confidence_score < 0.8) 
+            {
+              document.getElementById('manual_review_badge').style.display = 'inline-block';
+            }
           }
         }
 
         // Update accounting proposal
         if (result.accounting_proposal) 
-        {
-          const debitSelect = document.querySelector('.form-select');
-          if (debitSelect && result.accounting_proposal.debit_account) 
-          {
-            debitSelect.value = result.accounting_proposal.debit_account;
+            {
+            renderAccountingEntry(result.accounting_proposal);
           }
-        }
       } 
       else 
       {
@@ -102,6 +102,49 @@ document.addEventListener('DOMContentLoaded', function()
       this.textContent = 'Upload & Extract';
     }
   });
+
+
+  function renderAccountingEntry(entry) 
+  {
+    const tbody = document.getElementById("journalEntries");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    // Debit rows
+    if (entry.debit && Array.isArray(entry.debit)) 
+    {
+      entry.debit.forEach(d => {
+        tbody.innerHTML += `
+          <tr>
+            <td>Debit</td>
+            <td>
+              <input type="text" class="form-control" value="${d.account}">
+            </td>
+            <td>
+              <input type="number" class="form-control" value="${d.amount}">
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // Credit rows
+    if (entry.credit && Array.isArray(entry.credit)) 
+    {
+      entry.credit.forEach(c => {
+        tbody.innerHTML += `
+          <tr>
+            <td>Credit</td>
+            <td>
+              <input type="text" class="form-control" value="${c.account}" disabled>
+            </td>
+            <td>
+              <input type="number" class="form-control" value="${c.amount}">
+            </td>
+          </tr>
+        `;
+      });
+    }
+  }
 
 
   // Preview uploaded file

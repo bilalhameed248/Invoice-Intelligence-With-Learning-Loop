@@ -1,6 +1,6 @@
 # import traceback, cv2, os
 # from paddleocr import PPStructureV3, PaddleOCR
-# # engine = PPStructureV3(lang='en')
+# engine = PPStructureV3(lang='en')
 
 # class Invoice_OCR:
 
@@ -14,7 +14,7 @@
 #             for res in output:
 #                 res.save_to_json(save_path=self.output_dir)
 
-#             print("\nOCR Done! Check folder:", output_dir)
+#             print("\nOCR Done! Check folder:", self.output_dir)
 
 #             return self.output_dir
 #         except Exception as e:

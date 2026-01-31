@@ -84,19 +84,41 @@
           <div class="section-title">3. Proposed Accounting Entry</div>
 
           <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <label class="form-label">Debit Account</label>
-              <select class="form-select">
+              <!-- <select class="form-select">
                 <option selected>Office Expense</option>
                 <option>IT Equipment Expense</option>
                 <option>Inventory</option>
-              </select>
+              </select> -->
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="section-title">3. Proposed Accounting Entry</div>
+
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th>Account</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody id="journalEntries">
+                      <!-- Filled dynamically -->
+                    </tbody>
+                  </table>
+
+                  <small class="text-muted">
+                    You can edit accounts or amounts before confirming.
+                  </small>
+                </div>
+              </div>
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <label class="form-label">Credit Account</label>
               <input type="text" class="form-control" value="Accounts Payable" disabled>
-            </div>
-          </div>
+            </div> -->
+          </div> 
 
         </div>
       </div>
@@ -113,11 +135,11 @@
               </p>
               <p class="mb-0">
                 Confidence Score:
-                <span class="confidence-low">0.68</span>
+                <span class="confidence-low">0.0</span>
               </p>
             </div>
             <div class="col-md-6 text-end">
-              <span class="badge bg-warning text-dark">
+              <span class="badge bg-warning text-dark" id  = "manual_review_badge" style="display: none;">
                 Manual Review Required
               </span>
             </div>
