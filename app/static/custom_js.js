@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() 
 {
-
+  let extractedResult = null;
   document.getElementById('uploadBtn').addEventListener('click', async function() 
   {
     const fileInput = document.getElementById('invoiceFile');
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function()
         statusDiv.innerHTML = '<div class="alert alert-success">Invoice extracted successfully!</div>';
         console.log(result);
         
-        
+        extractedResult = result;
         if (result.extracted_data) 
         {
           const vendorName = document.getElementById('vendor_name');
@@ -145,6 +145,99 @@ document.addEventListener('DOMContentLoaded', function()
       });
     }
   }
+
+
+  document.getElementById('save_corrections_btn').addEventListener('click', async function() 
+  {
+      if (!extractedResult || !extractedResult.extracted_data) 
+      {
+          alert('Please upload and extract an invoice first!');
+          return;
+      }
+
+      const statusDiv = document.getElementById('uploadStatus');
+
+      const correctedFields = 
+      {
+          vendor_name: document.getElementById('vendor_name')?.value.trim() || '',
+          invoice_number: document.getElementById('invoice_number')?.value.trim() || '',
+          invoice_date: document.getElementById('invoice_date')?.value || '',
+          tax_amount: parseFloat(document.getElementById('tax_amount')?.value) || null,
+          total_amount: parseFloat(document.getElementById('total_amount')?.value) || null
+      };
+
+      const correctedAccounting = {
+          debit: [],
+          credit: []
+      };
+
+      document.querySelectorAll('#journalEntries tr').forEach(row => {
+          const type = row.cells[0].textContent.trim();
+          const accountInput = row.querySelector('input[type="text"]');
+          const amountInput = row.querySelector('input[type="number"]');
+
+          if (accountInput && amountInput) 
+          {
+              const entry = {
+                  account: accountInput.value.trim(),
+                  amount: parseFloat(amountInput.value) || 0
+              };
+
+              if (type === 'Debit')
+             {
+                  correctedAccounting.debit.push(entry);
+              } 
+              else if (type === 'Credit') 
+              {
+                  correctedAccounting.credit.push(entry);
+              }
+          }
+      });
+
+      const payload = 
+      {
+          invoice_id: correctedFields.invoice_number || extractedResult.extracted_data.invoice_number || 'unknown',
+          model_version: "v1.0",
+          predicted_fields: extractedResult.extracted_data || {},
+          corrected_fields: {
+              ...correctedFields,
+              accounting: correctedAccounting
+          },
+          confidence: extractedResult.confidence_score || 0.0,
+          ocr_text: extractedResult.ocr_text || ""
+      };
+      console.log(payload)
+
+      try 
+      {
+          const response = await fetch('/api/invoice/feedback', 
+          {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+          if (response.ok) 
+          {
+              statusDiv.innerHTML = '<div class="alert alert-success">Corrections saved successfully! Thank you for your feedback.</div>';
+              alert('Feedback saved successfully!');
+          } 
+          else 
+          {
+              statusDiv.innerHTML = `<div class="alert alert-danger">Error saving feedback: ${result.detail || 'Unknown error'}</div>`;
+              alert('Failed to save feedback: ' + (result.detail || 'Unknown error'));
+          }
+      } 
+      catch (err) 
+      {
+          statusDiv.innerHTML = '<div class="alert alert-danger">Network error while saving feedback</div>';
+          console.error('Feedback save error:', err);
+          alert('Failed to connect to server');
+      }
+  });
 
 
   // Preview uploaded file

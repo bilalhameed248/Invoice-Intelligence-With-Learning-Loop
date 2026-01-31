@@ -1,11 +1,12 @@
-from fastapi import FastAPI, Request, UploadFile, File, Body
+from fastapi import FastAPI, Request, UploadFile, File, Body, Depends
 import uvicorn
+from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from controllers.invoice_controller import (process_invoice_upload)
-from controllers.db_config import create_db
-from controllers.feedback import process_invoice_feedback
+from controllers.db_config import create_db, get_db
+from controllers.feedback import *
 
 app = FastAPI(
     title="Invoice Intelligence with Learning Loop",
@@ -34,11 +35,9 @@ async def invoice_feedback(payload: dict = Body(...), db: Session = Depends(get_
     try:
         validated = FeedbackPayload(**payload)
     except Exception as e:
-        return JSONResponse(
-            status_code=422,
-            content={"detail": f"Invalid payload: {str(e)}"}
-        )
+        return JSONResponse(status_code=422, content={"detail": f"Invalid payload: {str(e)}"}        )
     response = await process_invoice_feedback(validated, db)
+    print("response:",response)
     return JSONResponse(content=response)
 
 if __name__ == "__main__":

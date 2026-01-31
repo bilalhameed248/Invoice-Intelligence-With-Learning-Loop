@@ -28,11 +28,11 @@ async def process_invoice_upload(file: UploadFile) -> dict:
     
     # Sample response structure
     sample_basic_invoice_data = {
-        "vendor_name": "ABC Traders Pvt Ltd",
-        "invoice_number": "INV-223",
-        "invoice_date": "2026-01-12",
-        "tax_amount": 141.00,
-        "total_amount": 2491.00
+        "vendor_name": "---",
+        "invoice_number": "0001",
+        "invoice_date": "1900-00-00",
+        "tax_amount": 00.00,
+        "total_amount": 00.00
     }
     
     sample_accounting_entry = {
