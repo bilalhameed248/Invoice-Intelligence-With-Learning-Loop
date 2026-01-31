@@ -47,18 +47,3 @@ async def process_invoice_upload(file: UploadFile) -> dict:
         "confidence_score": extracted_data['confidence_score'] if 'confidence_score' in extracted_data else 0,
         "model_version": "v1.0"
     }
-        
-
-# ---------------------------------------------------------
-# Feedback (Stub for Learning Loop)
-# ---------------------------------------------------------
-async def process_invoice_feedback(payload: dict) -> dict:
-    """
-    Stores user corrections (learning loop placeholder)
-    """
-
-    return {
-        "message": "Feedback received",
-        "invoice_id": payload.get("invoice_id"),
-        "timestamp": datetime.utcnow().isoformat()
-    }

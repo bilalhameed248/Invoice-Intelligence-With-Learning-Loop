@@ -13,8 +13,8 @@ T-OCR/
 │   │   ├── extract_fields.py      # Field extraction logic
 │   │   ├── invoice_controller.py  # Invoice API endpoints
 │   │   └── ocr.py                 # OCR processing logic
-│   ├── routes/
-│   │   └── routes.py              # Application routes
+│   ├── models/
+│   │   └── models.py              # Application models
 │   ├── static/
 │   │   └── custom_js.js           # Custom JavaScript files
 │   └── templates/
