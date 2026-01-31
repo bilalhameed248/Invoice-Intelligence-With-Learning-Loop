@@ -1,14 +1,14 @@
 import os, uuid
 from datetime import datetime
 from fastapi import UploadFile
-# from .ocr import Invoice_OCR
+from .ocr import Invoice_OCR
 from .data_extraction import DataExtraction
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INVOICE_DIR = os.path.join(BASE_DIR, "static", "invoices")
 os.makedirs(INVOICE_DIR, exist_ok=True)
 
-# ocr_obj = Invoice_OCR()
+ocr_obj = Invoice_OCR()
 data_ext_obj = DataExtraction()
 
 async def process_invoice_upload(file: UploadFile) -> dict:
@@ -18,12 +18,11 @@ async def process_invoice_upload(file: UploadFile) -> dict:
         content = await file.read()
         buffer.write(content)
 
-    # ocr_output_dir = ocr_obj.image_ocr(file_path)
-    # if not ocr_output_dir:
-    #     return {"status": "error", "error": "OCR processing failed"}
+    ocr_output_dir = ocr_obj.image_ocr(file_path)
+    if not ocr_output_dir:
+        return {"status": "error", "error": "OCR processing failed"}
     
     ocr_output_dir = os.path.join(BASE_DIR, "data", "ocr_output/image_sample_invoice_res.json")
-    # ocr_output_dir = 'app/data/ocr_output/image_sample_invoice_res.json'
     extracted_data = data_ext_obj.rule_based_extraction(ocr_output_dir)
     
     # Sample response structure
@@ -34,15 +33,13 @@ async def process_invoice_upload(file: UploadFile) -> dict:
         "tax_amount": 00.00,
         "total_amount": 00.00
     }
-    
-    sample_accounting_entry = {
-        "debit_account": "Office Expense",
-        "credit_account": "Accounts Payable"
-    }
+
+    sample_accounting_entry= {'debit': [{'account': '--', 'amount': 00.0}], 'credit': [{'account': '--', 'amount': 00.0}]}
     
     return {
         "status": "success",
         "extracted_data": extracted_data['basic_invoice_data'] if 'basic_invoice_data' in extracted_data else sample_basic_invoice_data,
+        "ocr_text": extracted_data['ocr_text'] if 'ocr_text' in extracted_data else "---.",
         "accounting_proposal": extracted_data['accounting_entry'] if 'accounting_entry' in extracted_data else sample_accounting_entry,
         "confidence_score": extracted_data['confidence_score'] if 'confidence_score' in extracted_data else 0,
         "model_version": "v1.0"

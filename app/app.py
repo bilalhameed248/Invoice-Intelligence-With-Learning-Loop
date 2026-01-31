@@ -14,9 +14,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# @app.on_event("startup")
-# def startup_event():
-#     create_db()
+@app.on_event("startup")
+def startup_event():
+    create_db()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -28,6 +28,7 @@ async def load_ui(request: Request):
 @app.post("/api/invoice/upload")
 async def upload_invoice(file: UploadFile = File(...)):
     response = await process_invoice_upload(file)
+    print(f"response: {response}")
     return JSONResponse(content=response)
 
 @app.post("/api/invoice/feedback")

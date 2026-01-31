@@ -75,10 +75,10 @@ class DataExtraction:
                     last_key = None  # reset after consuming value
 
 
-            print(extracted_data)
+            # print(extracted_data)
             accounting_entries = self.propose_accounting_entry(extracted_data, invoice_table)
-            print(accounting_entries)
-            return {"basic_invoice_data": extracted_data, "accounting_entry": accounting_entries, "confidence_score": 0.85}
+            # print(accounting_entries)
+            return {"basic_invoice_data": extracted_data, "ocr_text": ' | '.join(rec_texts), "accounting_entry": accounting_entries, "confidence_score": 0.85}
         except Exception as e:
             traceback.print_exc()
             print(f"Exception in rule_based_extraction {e}")
