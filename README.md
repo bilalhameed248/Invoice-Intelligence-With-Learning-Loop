@@ -1,4 +1,4 @@
-# T-OCR: Invoice Intelligence System
+# Invoice Intelligence with Learning Loop
 
 An OCR-based invoice processing system built with FastAPI for extracting and managing invoice data.
 
