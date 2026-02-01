@@ -26,12 +26,10 @@ Teera_ai/
 ├── data/
 │   ├── OCR.docx                    # Documentation and notes
 │   ├── pdf_sample_invoice.pdf      # Sample invoice for testing
-│   └── model_data/                 # Pretrained model files
 ├── notebook/
 │   ├── Donut-ITT.ipynb            # Donut model research and experiments
 │   ├── OCR-R&D.ipynb              # OCR research and development
 │   ├── Sample-LayoutLmv3_training_invoice_dataset.ipynb  # LayoutLMv3 training notebook
-│   ├── test.py                    # Testing scripts
 │   └── invoice_output/            # Output storage for notebook experiments
 ├── README.md                        # This file
 └── requirements.txt                 # Python dependencies
